@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 //@JsonIgnoreProperties(value={"password"}) // (value={"password","ssn"}) 등 배열 형식으로도 가능하다.
-//webhook 테스트를 위해 주석을 추가하고 push 합니다.
+// 다시 테스트.
 @JsonFilter("UserInfo")
 public class User {
     private Integer id;
