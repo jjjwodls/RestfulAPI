@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 //@JsonIgnoreProperties(value={"password"}) // (value={"password","ssn"}) 등 배열 형식으로도 가능하다.
-// 다시 테스트.
+// 다시 테스트.1234
 @JsonFilter("UserInfo")
 public class User {
     private Integer id;
