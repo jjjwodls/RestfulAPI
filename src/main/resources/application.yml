@@ -1,6 +1,6 @@
-#logging:
-#  level:
-#    org.springframework: DEBUG
+logging:
+  level:
+    org.springframework: DEBUG
 
 management :
   endpoints:
@@ -9,3 +9,17 @@ management :
         include: "*"
 
 
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+    defer-datasource-initialization: true #스프링 부트 2.5에서부턴 data.sql의 우선순위가 높아져서 테이블 생성 이후에 진행된다.
+
+
+
+h2:
+  console:
+    enabled: true
