@@ -17,10 +17,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/jpa")
-public class JavaJpaController {
+public class UserJpaController {
 
     @Autowired
     public UserRepository userRepository;
+
+    @Autowired
+    public PostRepository postRepository;
 
     @GetMapping("/users")
     public List<User> retrieveAllUsers(){
@@ -62,5 +65,35 @@ public class JavaJpaController {
         return ResponseEntity.created(location).build();
     }
 
+    // jpa/users/9001/posts
+    @GetMapping("/users/{id}/posts")
+    public List<Post> retrieveAllPostsByUser(@PathVariable int id){
+        Optional<User> user = userRepository.findById(id); //Optional 데이터는 데이터가 존재 할수도 안할수도 있기 때문에 Optional로 반환해줘야 한다.
+
+        if(!user.isPresent()){
+            throw new UserNotFoundException(String.format("[Id[%s] not found",id));
+        }
+
+        return user.get().getPosts();
+    }
+
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<Post> createPost(@PathVariable int id, @RequestBody Post post){
+        Optional<User> user = userRepository.findById(id); //Optional 데이터는 데이터가 존재 할수도 안할수도 있기 때문에 Optional로 반환해줘야 한다.
+
+        if(!user.isPresent()){
+            throw new UserNotFoundException(String.format("[Id[%s] not found",id));
+        }
+
+        post.setUser(user.get());
+        Post savedPost = postRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedPost.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
 
 }
